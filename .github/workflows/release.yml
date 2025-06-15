@@ -1,0 +1,97 @@
+name: Build
+run-name: Build ${{ github.event.inputs.version }} by @${{ github.actor }}
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version number (eg. v1.0.0)'
+        required: true
+        type: string
+  push:
+
+jobs:
+  build-and-upload:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 'node'
+
+      - name: Cache Modules
+        uses: actions/cache@v4
+        id: cache-modules
+        with:
+          path: node_modules
+          key: ${{ runner.OS }}-${{ hashFiles('**/package-lock.json') }}
+
+      - name: Install dependencies
+        if: steps.cache-modules.outputs.cache-hit != 'true'
+        run: npm install
+
+      - name: Build project
+        run: npm run build
+
+      - name: Package build artifacts
+        run: |
+          mkdir dist-package
+          cp -r dist/* dist-package/
+          cd dist-package
+          zip -r ../release-${{ github.event.inputs.version }}.zip .
+
+      - name: Create draft Release
+        id: create_release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ github.event.inputs.version }}
+          name: ${{ github.event.inputs.version }}
+          draft: true
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+
+      - name: Upload build artifacts to Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: release-${{ github.event.inputs.version }}.zip
+          tag_name: ${{ github.event.inputs.version }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+
+  build-on-push:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 'node'
+      - name: Cache Modules
+        uses: actions/cache@v4
+        id: cache-modules
+        with:
+          path: node_modules
+          key: ${{ runner.OS }}-${{ hashFiles('**/package-lock.json') }}
+      - name: Install dependencies
+        if: steps.cache-modules.outputs.cache-hit != 'true'
+        run: npm install
+      - name: Build project
+        run: npm run build
+      - name: Package build artifacts
+        run: |
+          mkdir dist-package
+          cp -r dist/* dist-package/
+          cd dist-package
+          zip -r ../build-artifact.zip .
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-artifact
+          path: build-artifact.zip 
