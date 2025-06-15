@@ -1,0 +1,139 @@
+---
+// src/pages/index.astro
+import BaseLayout from '../../layouts/Layout.astro';
+import Sidebar from '../../components/Sidebar.astro';
+import AppBar from '../../components/AppBar.astro';
+const base = import.meta.env.BASE_URL;
+const version = import.meta.env.npm_package_version;
+---
+
+<BaseLayout title="MiRouter-UI | 设置">
+  <!-- 添加ECharts脚本 -->
+  <!-- <Fragment slot="head">
+    <script src={`${base}js/echarts.min.js`}></script>
+  </Fragment> -->
+  
+
+  
+  <!-- 主要内容 -->
+  <main slot="main">
+    <div class="mdui-container">
+        <div class="mdui-card mdui-m-a-2" style="overflow: unset;">
+            <div class="mdui-card-content">
+                <div class="mdui-typo-subheading-opacity mdui-m-y-1" i18n="settings.websettings.title">前端页面配置</div>
+                <div class="mdui-divider gap"></div>
+
+                <span class="mdui-typo-body-2-opacity" i18n="general.data-fit-time-select.title">流量数据拟合时间：</span>
+                <select id="data-fit-time-select-settings">
+                    <option value="month" i18n="general.data-fit-time-select.month" i18n-only="html">月</option>
+                    <option value="week" i18n="general.data-fit-time-select.week" i18n-only="html">周</option>
+                    <option value="day" i18n="general.data-fit-time-select.day" i18n-only="html">天</option>
+                    <option value="hour" i18n="general.data-fit-time-select.hour" i18n-only="html">时</option>
+                    <option value="min" i18n="general.data-fit-time-select.min" i18n-only="html">分</option>
+                  </select>
+                  <br>
+
+                  <span class="mdui-typo-body-2-opacity" i18n="settings.traffic-unit-select.title">流量单位：</span>
+                  <select id="traffic-unit-select-settings">
+                    <option value="TiB">TiB</option>
+                    <option value="GiB">GiB</option>
+                    <option value="MiB">MiB</option>
+                    <option value="KiB">KiB</option>
+                    <option value="B">B</option>
+                  </select>
+                  <br>
+
+                  <span class="mdui-typo-body-2-opacity" i18n="settings.speed-unit-select.title">速度单位：</span>
+                  <select id="speed-unit-select-settings">
+                    <option value="MiB/s">MiB/s</option>
+                    <option value="KiB/s">KiB/s</option>
+                    <option value="B/s">B/s</option>
+                  </select>
+                  <br>
+
+                  <div class="mdui-textfield">
+                    <span class="mdui-typo-body-2-opacity" i18n="settings.page-update-time-select.title">页面自动更新时间：</span>
+                    <input class="mdui-textfield-input" type="text" placeholder="毫秒" i18n="settings.page-update-time-select.placeholder"  i18n-only="placeholder" id="page-update-time-select-settings" oninput = "value=value.replace(/[^\d]/g,'')"/>
+                  </div>
+
+                  <div class="mdui-divider gap"></div>
+
+
+                  <span class="mdui-typo-body-2-opacity" i18n="settings.language-select.title">语言切换：</span>
+                  <select id="language-select-settings">
+                    <option value="zh_CN">简体中文</option>
+                    <option value="zh_TW">繁体中文</option>
+                    <option value="en">English</option>
+                  </select>
+            </div>
+        </div>
+    </div>
+    <div class="mdui-container">
+        <div class="mdui-card mdui-m-a-2">
+            <div class="mdui-card-content">
+                <div class="mdui-typo-subheading-opacity mdui-m-y-1" i18n="settings.checkupdate.title">检查更新</div>
+                <div class="mdui-divider gap"></div>
+                <p><span i18n="settings.checkupdate.frontversion">前端版本：</span><span id="frontversion">{version}</span><br><span i18n="settings.checkupdate.backendversion">后端版本：</span><span id="backendversion">load</span></p>
+                <div class="mdui-divider gap"></div>
+                <p id="update-info" i18n="settings.checkupdate.checkupdate">点击按钮检查更新...</p>
+                <div class="mdui-divider gap"></div>
+                <div id="update-log">
+                    <a href="https://github.com/Mirouterui/static/releases" i18n="settings.checkupdate.viewfrontchangelog">查看前端更新日志</a><br>
+                    <a href="https://github.com/Mirouterui/mirouter-ui/releases" i18n="settings.checkupdate.viewbackendchangelog">查看后端更新日志</a>
+                </div>
+            </div>
+            <div class="mdui-card-actions">
+                <button id="flushFront-button" class="mdui-btn mdui-ripple mdui-color-theme-accent" onclick="flushFront()" i18n="settings.checkupdate.buttontext.flushfront" disabled>更新前端</button>
+                <button id="checkUpdate-button" class="mdui-btn mdui-ripple mdui-color-theme-accent" onclick="checkUpdate()" i18n="settings.checkupdate.buttontext.checkupdate">检查更新</button>
+            </div>
+        </div>
+    </div>
+    <div class="mdui-dialog" id="loadingPhrases">
+        <div class="mdui-dialog-content mdui-valign">
+            <div class="mdui-spinner" style="margin-right: 16px;" i18n="settings.checkupdate.loading"></div>
+            处理中......
+        </div>
+    </div>
+    <style>
+        .mdui-card {
+            box-shadow: 20px 20px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+        
+        .mdui-card-actions {
+            text-align: right;
+            /* 将按钮右对齐 */
+        }
+        
+        .mdui-card-actions .mdui-btn {
+            border-radius: 8px;
+        }
+    </style>
+    <div class="mdui-container">
+        <div class="mdui-card mdui-m-a-2">
+            <div class="mdui-card-header">
+                <img class="mdui-card-header-avatar" src={`${base}favicon.ico`} style="border-radius: 0%;"/>
+                <div class="mdui-card-header-title" i18n="settings.programlink.title">设置后端地址</div>
+                <div class="mdui-card-header-subtitle" i18n="settings.programlink.subtitle">配置应用的后端服务器地址</div>
+            </div>
+            <div class="mdui-card-content">
+                <form id="Form">
+                    <div class="mdui-textfield">
+                        <label class="mdui-textfield-label" i18n="settings.programlink.ip">后端程序IP</label>
+                        <input class="mdui-textfield-input" type="text" id="ip" required />
+                    </div>
+                    <div class="mdui-textfield">
+                        <label class="mdui-textfield-label" i18n="settings.programlink.port">后端程序端口（默认6789）</label>
+                        <input class="mdui-textfield-input" type="text" id="port" required />
+                    </div>
+                    <div class="mdui-card-actions">
+                    <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent" type="submit" i18n="settings.programlink.button.confirm">确定</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src={`${base}js/settings.js`}></script>
+  </main>
+</BaseLayout>

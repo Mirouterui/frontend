@@ -1,0 +1,80 @@
+---
+// src/pages/index.astro
+import BaseLayout from '../../layouts/Layout.astro';
+const base = import.meta.env.BASE_URL;
+---
+
+<BaseLayout title="MiRouter-UI | 设备历史">
+  <!-- 添加ECharts脚本 -->
+  <Fragment slot="head">
+    <script src={`${base}js/echarts.min.js`}></script>
+  </Fragment>
+  
+
+  
+  <!-- 主要内容 -->
+  <main slot="main">
+	<div class="mdui-container">
+		<div class="mdui-card mdui-m-a-2">
+			<!-- 卡片标题 -->
+			<div class="mdui-card-header">
+				<img class="mdui-card-header-avatar" id="deviceicon" src={`${base}img/device.png`} />
+				<div class="mdui-card-header-title" id="devicename">loading</div>
+				<div class="mdui-card-header-subtitle" id="device_oname">loading</div>
+				<div class="mdui-card-menu">
+					<a href="javascript:jumptodeviceinfo()">
+						<i id="info-3" class="mdui-icon material-icons" mdui-tooltip="{content: '查看设备信息'}">info_outline</i>
+					</a>
+				</div>
+
+			</div>
+			<!-- 卡片内容 -->
+			<div class="mdui-card-content">
+				<div id="all-chart">
+					<div class="mdui-typo-subheading-opacity mdui-m-y-1"  i18n="devicehistory.subheading1">网速</div>
+					<div id="speed-chart" style="width: 100%; height: 300px;"></div>
+					<div class="mdui-divider gap"></div>
+
+					<!-- 总出入流量 -->
+					<div class="mdui-typo-subheading-opacity mdui-m-y-1" i18n="general.totaltraffic">总出入流量</div>
+					<div style="text-align:right;padding-right: 1em;padding-bottom: 1em;">
+						<!-- 选择数据拟合时间 -->
+						<span class="mdui-typo-body-2-opacity" i18n="general.data-fit-time-select.title">数据拟合时间：</span>
+						<select id="data-fit-time-select" class="mdui-select">
+							<option value="month" i18n="general.data-fit-time-select.month" i18n-only="html">月</option>
+							<option value="week" i18n="general.data-fit-time-select.week" i18n-only="html">周</option>
+							<option value="day" i18n="general.data-fit-time-select.day" i18n-only="html">天</option>
+							<option value="hour" i18n="general.data-fit-time-select.hour" i18n-only="html">时</option>
+							<option value="min" i18n="general.data-fit-time-select.min" i18n-only="html">分</option>
+						  </select>
+					</div>
+					<div id="traffic-chart" style="width: 100%; height: 300px;"></div>
+					<div class="mdui-divider gap"></div>
+				</div>
+				<div class="mdui-typo-subheading-opacity mdui-m-y-1" i18n="general.settingsinfo">设置信息</div>
+				<div class="mdui-row-xs-1 mdui-row-sm-2">
+					<div class="mdui-col">
+						<span class="mdui-typo-body-2-opacity" i18n="general.sampletime">采样时间间隔(s)：</span>
+						<span id="sampletime">load</span>
+					</div>
+					<div class="mdui-col">
+						<span class="mdui-typo-body-2-opacity" i18n="general.maxsaved">保留数据条数：</span>
+						<span id="maxsaved">load</span>
+					</div>
+					<div class="mdui-col">
+						<span class="mdui-typo-body-2-opacity" i18n="general.timespan">展示时间跨度：</span>
+						<span id="timespan">load</span>
+					</div>
+					<div class="mdui-col">
+						<span class="mdui-typo-body-2-opacity" i18n="general.databasepath">数据库路径：</span>
+						<span id="databasepath">load</span>
+					</div>
+				</div>
+			</div>
+
+		</div>
+		<script src={`${base}js/devicehistory.js`}></script>
+	</div>
+	</div>
+  </main>
+</BaseLayout>

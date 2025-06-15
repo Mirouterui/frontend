@@ -1,22 +1,40 @@
-<!doctype html>
-<html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
-	</head>
-	<body>
-		<slot />
-	</body>
-</html>
+---
+// src/layouts/BaseLayout.astro
+const { title = "MIROUTER-UI" } = Astro.props;
+import Sidebar from '../components/Sidebar.astro';
+import AppBar from '../components/AppBar.astro';
+const base = import.meta.env.BASE_URL;
+const version = import.meta.env.npm_package_version;
+---
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{title}</title>
+  <link rel="stylesheet" href={`${base}css/mdui.min.css`}>
+  <script src={`${base}js/mdui.min.js`}></script>
 
-<style>
-	html,
-	body {
-		margin: 0;
-		width: 100%;
-		height: 100%;
-	}
-</style>
+  <script src={`${base}js/jquery.min.js`}></script>
+  <script src={`${base}js/jquery.i18n.min.js`}></script>
+  <link rel="icon" href={`${base}favicon.ico`} type="image/x-icon">
+  <meta name="version" content={version}>
+  <!-- 页面特定的头部内容 -->
+  <slot name="head" />
+</head>
+
+<body class="mdui-theme-primary-blue-grey mdui-theme-accent-blue light">
+  <!-- 侧边栏 -->
+  <Sidebar />
+  
+  <!-- 顶部应用栏 -->
+  <AppBar />
+  
+  <!-- 主要内容插槽 -->
+  <slot name="main" />
+  
+  <!-- 全局脚本 -->
+  <script src={`${base}js/general.js`}></script>
+  <link rel="stylesheet" href={`${base}css/general.css`}>
+</body>
+</html>

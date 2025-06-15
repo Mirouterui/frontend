@@ -1,0 +1,56 @@
+---
+// src/components/Sidebar.astro
+const base = import.meta.env.BASE_URL;
+---
+<div class="mdui-drawer mdui-drawer-close" id="sidebar">
+    <div class="mdui-list" mdui-collapse="{accordion: true}">
+      <li class="mdui-subheader" i18n="sidebar.subheader">路由器</li>
+      <a href={`${base}`} class="mdui-list-item mdui-ripple">
+        <i class="mdui-list-item-icon mdui-icon material-icons">home</i>
+        <div class="mdui-list-item-content" i18n="sidebar.home">首页</div>
+      </a>
+      <a href={`${base}devicelist/`} class="mdui-list-item mdui-ripple">
+        <i class="mdui-list-item-icon mdui-icon material-icons">devices</i>
+        <div class="mdui-list-item-content" i18n="sidebar.devicelist">设备列表</div>
+      </a>
+      <a href={`${base}router/`} class="mdui-list-item mdui-ripple">
+        <i class="mdui-list-item-icon mdui-icon material-icons">router</i>
+        <div class="mdui-list-item-content" i18n="sidebar.routerstatus">路由器状态</div>
+      </a>
+      <a href={`${base}routerhistory/`} class="mdui-list-item mdui-ripple">
+        <i class="mdui-list-item-icon mdui-icon material-icons">history</i>
+        <div class="mdui-list-item-content" i18n="sidebar.historydata">历史数据</div>
+      </a>
+      <a href={`${base}upnp/`} class="mdui-list-item mdui-ripple">
+        <i class="mdui-list-item-icon mdui-icon material-icons">compare_arrows</i>
+        <div class="mdui-list-item-content" i18n="sidebar.upnp">Upnp</div>
+      </a>
+      <a href={`${base}temperature/`} class="mdui-list-item mdui-ripple">
+        <i class="mdui-list-item-icon mdui-icon material-icons">wb_sunny</i>
+        <div class="mdui-list-item-content" i18n="sidebar.routertemperature">路由器温度</div>
+      </a>
+      <a href={`${base}choicerouter/`} class="mdui-list-item mdui-ripple">
+        <i class="mdui-list-item-icon mdui-icon material-icons">list</i>
+        <div class="mdui-list-item-content" i18n="sidebar.choicerouter">选择路由器</div>
+      </a>
+      
+      <li class="mdui-subheader" i18n="sidebar.mrui">MRUI</li>
+      <a href={`${base}settings/`} class="mdui-list-item mdui-ripple">
+        <i class="mdui-list-item-icon mdui-icon material-icons">settings</i>
+        <div class="mdui-list-item-content" i18n="sidebar.settings">设置</div>
+      </a>
+      <a href="javascript:refreshToken()" class="mdui-list-item mdui-ripple">
+        <i class="mdui-list-item-icon mdui-icon material-icons">refresh</i>
+        <div class="mdui-list-item-content" i18n="sidebar.refreshtoken">刷新token</div>
+      </a>
+      <a href="https://github.com/Mirouterui/mirouter-ui/issues" class="mdui-list-item mdui-ripple">
+        <i class="mdui-list-item-icon mdui-icon material-icons">feedback</i>
+        <div class="mdui-list-item-content" i18n="sidebar.feedback">反馈</div>
+      </a>
+    </div>
+    
+    <div class="copyright">
+      <p><a href="https://github.com/Mirouterui/mirouter-ui" target="_blank">Mirouter-ui</a></p>
+      <p>Maded by <a href="https://hzchu.top">Thun888</a></p>
+    </div>
+  </div>

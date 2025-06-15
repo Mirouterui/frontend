@@ -1,0 +1,162 @@
+---
+// src/pages/index.astro
+import BaseLayout from '../../layouts/Layout.astro';
+import Sidebar from '../../components/Sidebar.astro';
+import AppBar from '../../components/AppBar.astro';
+const base = import.meta.env.BASE_URL;
+---
+
+<BaseLayout title="MiRouter-UI | 路由器">
+  <!-- 添加ECharts脚本 -->
+  <Fragment slot="head">
+    <script src={`${base}js/echarts.min.js`}></script>
+  </Fragment>
+  
+
+  
+  <!-- 主要内容 -->
+  <main slot="main">
+	<div class="mdui-container">
+		<div class="mdui-card mdui-m-a-2">
+			<!-- 卡片标题 -->
+			<div class="mdui-card-header">
+				<img class="mdui-card-header-avatar" src={`${base}img/mirouter.png`} style="border-radius: 0%;"/>
+				<div class="mdui-card-header-title" id="platform">platform</div>
+				<div class="mdui-card-header-subtitle" id="router_name">name</div>
+				<div class="mdui-card-menu">
+					<a href="/index.html">
+						<i id="info-3" class="mdui-icon material-icons" mdui-tooltip="{content: '返回主页'}">home</i>
+					</a>
+				</div>
+
+			</div>
+			<!-- 卡片内容 -->
+			<div class="mdui-card-content">
+				<!-- 网格布局 -->
+				<div class="mdui-row-xs-1 mdui-row-sm-2">
+					<!-- CPU 使用率 -->
+					<div class="mdui-col">
+						<div class="mdui-typo-subheading-opacity" i18n="general.cpu-used">CPU 使用率</div>
+						<div class="mdui-progress" id="cpu-used">
+							<div class="mdui-progress-determinate mdui-color-indigo-400" style="width: 0%"></div>
+						</div>
+						<div class="mdui-typo-body-2-opacity" id="cpu-used-text">load</div>
+					</div>
+					<!-- 内存使用率 -->
+					<div class="mdui-col">
+						<div class="mdui-typo-subheading-opacity" i18n="general.mem-used">内存使用率</div>
+						<div class="mdui-progress" id="mem-used">
+							<div class="mdui-progress-determinate mdui-color-pink-400" style="width: 0%"></div>
+						</div>
+						<div class="mdui-typo-body-2-opacity" id="mem-used-text">load</div>
+					</div>
+				</div>
+				<div id="status-chart" style="width: 100%; height: 300px;"></div>
+
+				<!-- 分割线 -->
+				<div class="mdui-divider gap"></div>
+				<div class="mdui-row-xs-1 mdui-row-sm-2">
+					<!-- 网络上传速度 -->
+					<div class="mdui-col">
+						<div class="mdui-typo-subheading-opacity" i18n="general.uploadspeed">上传速度</div>
+						<span class="mdui-typo-body-2-opacity" id="uploadspeed">load</span>
+						<div class="mdui-typo-subheading-opacity" i18n="general.maxuploadspeed">最大上传速度</div>
+						<span class="mdui-typo-body-2-opacity" id="maxuploadspeed">load</span>
+					</div>
+					<!-- 网络下载速度 -->
+					<div class="mdui-col">
+						<div class="mdui-typo-subheading-opacity" i18n="general.downloadspeed">下载速度</div>
+						<span class="mdui-typo-body-2-opacity" id="downloadspeed">load</span>
+						<div class="mdui-typo-subheading-opacity" i18n="general.maxdownloadspeed">最大下载速度</div>
+						<span class="mdui-typo-body-2-opacity" id="maxdownloadspeed">load</span>
+
+					</div>
+				</div>
+				<div id="speed-chart" style="width: 100%; height: 300px;"></div>
+
+				<!-- 分割线 -->
+				<div class="mdui-divider gap"></div>
+				<!-- 总出入流量 -->
+				<div class="mdui-typo-subheading-opacity mdui-m-y-1" i18n="general.totaltraffic">总出入流量</div>
+				<div class="mdui-row-xs-1 mdui-row-sm-2">
+					<div class="mdui-col">
+
+						<span class="mdui-typo-body-2-opacity" i18n="general.upload">上传：</span>
+						<span id="uploadtotal">load</span>
+					</div>
+					<div class="mdui-col">
+
+						<span class="mdui-typo-body-2-opacity" i18n="general.download">下载：</span>
+						<span id="downloadtotal">load</span>
+					</div>
+					<div id="traffic-chart" style="width: 100%; height: 300px;"></div>
+				</div>
+				<div class="mdui-divider gap"></div>
+
+				<div class="mdui-typo-subheading-opacity mdui-m-y-1" i18n="router.deviceinfo">设备信息</div>
+				<div class="mdui-row-xs-1 mdui-row-sm-2">
+					<div class="mdui-col">
+						<span class="mdui-typo-body-2-opacity" i18n="router.mac">MAC地址：</span>
+						<span id="mac">load</span>
+					</div>
+					<div class="mdui-col">
+						<span class="mdui-typo-body-2-opacity" i18n="router.sn">SN：</span>
+						<span id="sncode">load</span>
+					</div>
+					<div class="mdui-col">
+						<span class="mdui-typo-body-2-opacity" i18n="router.system_version">系统版本：</span>
+						<span id="system-version">load</span>
+					</div>
+					<div class="mdui-col">
+						<span class="mdui-typo-body-2-opacity" i18n="router.cpu_core">CPU核心数：</span>
+						<span id="cpu_core">load</span>
+					</div>
+					<div class="mdui-col">
+						<span class="mdui-typo-body-2-opacity" i18n="router.cpu_freq">CPU工作频率：</span>
+						<span id="cpu_freq">load</span>
+					</div>
+					<div class="mdui-col">
+						<span class="mdui-typo-body-2-opacity" i18n="router.mem_total">内存容量：</span>
+						<span id="mem_total">load</span>
+					</div>
+					<div class="mdui-col">
+						<span class="mdui-typo-body-2-opacity" i18n="router.mem_freq">内存频率：</span>
+						<span id="mem_freq">load</span>
+					</div>
+					<div class="mdui-col">
+						<span class="mdui-typo-body-2-opacity" i18n="router.mem_type">内存类型：</span>
+						<span id="mem_type">load</span>
+					</div>
+					<div class="mdui-col">
+						<span class="mdui-typo-body-2-opacity" i18n="router.isinit">是否初始化：</span>
+						<span id="isinit">load</span>
+					</div>
+					<div class="mdui-col">
+						<span class="mdui-typo-body-2-opacity" i18n="router.is4kblock">是否为<strong>4K Block</strong>：</span>
+						<span id="is4kblock">load</span>
+					</div>
+					<div class="mdui-col">
+						<span class="mdui-typo-body-2-opacity" i18n="router.isuart">是否开启<strong>UART</strong>：</span>
+						<span id="isuart">load</span>
+					</div>
+					<div class="mdui-col">
+						<span class="mdui-typo-body-2-opacity" i18n="router.isfacmode">是否为工厂模式：</span>
+						<span id="isfacmode">load</span>
+					</div>
+					<div class="mdui-col">
+						<span class="mdui-typo-body-2-opacity" i18n="router.isssh">是否开启<strong>SSH</strong>：</span>
+						<span id="isssh">load</span>
+					</div>
+					<div class="mdui-col">
+						<span class="mdui-typo-body-2-opacity" i18n="router.istelnet">是否开启<strong>Telnet</strong>：</span>
+						<span id="istelnet">load</span>
+					</div>
+					
+				</div>
+			</div>
+
+		</div>
+		<script src={`${base}js/router.js`}></script>
+	</div>
+  </main>
+</BaseLayout>

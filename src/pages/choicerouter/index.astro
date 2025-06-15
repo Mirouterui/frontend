@@ -1,0 +1,41 @@
+---
+// src/pages/index.astro
+import BaseLayout from '../../layouts/Layout.astro';
+import Sidebar from '../../components/Sidebar.astro';
+import AppBar from '../../components/AppBar.astro';
+const base = import.meta.env.BASE_URL;
+---
+
+<BaseLayout title="MiRouter-UI | 选择路由器">
+  <!-- 添加ECharts脚本 -->
+  <!-- <Fragment slot="head">
+    <script src={`${base}js/echarts.min.js`}></script>
+  </Fragment> -->
+  
+
+  
+  <!-- 主要内容 -->
+  <main slot="main">
+	<div class="mdui-container">
+		<div class="mdui-card mdui-m-a-2">
+			<div class="mdui-card-header">
+				<img class="mdui-card-header-avatar" src={`${base}img/mirouter.png`} style="border-radius: 0%;"/>
+				<div class="mdui-card-header-title" i18n="choicerouter.title">选择路由器</div>
+			</div>
+			<div class="mdui-card-content">
+				<table class="mdui-table mdui-table-hoverable">
+					<thead>
+						<tr>
+							<th i18n="choicerouter.th.routername">路由器名称</th>
+							<th i18n="choicerouter.th.ip">IP地址</th>
+						</tr>
+					</thead>
+					<tbody id="router-list">
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+	<script src={`${base}js/choicerouter.js`}></script>
+  </main>
+</BaseLayout>

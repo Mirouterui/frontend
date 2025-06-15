@@ -1,0 +1,21 @@
+---
+// src/components/AppBar.astro
+---
+<div class="mdui-appbar">
+    <div class="mdui-toolbar mdui-color-teal mdui-appbar-scroll-hide">
+      <a href="javascript:;" class="mdui-btn mdui-btn-icon" mdui-drawer="{target: '#sidebar'}">
+        <i class="mdui-icon material-icons">menu</i>
+      </a>
+      <a href="#" class="mdui-typo-headline" id="titletext">Mirouter-UI</a>
+      <div class="mdui-toolbar-spacer"></div>
+      <a href="/" class="mdui-btn mdui-btn-icon mdui-ripple mdui-ripple-white" mdui-tooltip="{content: '回到主页'}">
+        <i class="mdui-icon material-icons">home</i>
+      </a>
+      <a class="mdui-btn mdui-btn-icon mdui-ripple mdui-ripple-white" mdui-tooltip="{content: '夜间模式'}" onclick="darkMode();">
+        <i class="mdui-icon material-icons">brightness_medium</i>
+      </a>
+      <a href="javascript:location.reload();" class="mdui-btn mdui-btn-icon mdui-ripple mdui-ripple-white" mdui-tooltip="{content: '刷新'}">
+        <i class="mdui-icon material-icons">refresh</i>
+      </a>
+    </div>
+  </div>
