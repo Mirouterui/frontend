@@ -61,7 +61,7 @@ function checkUpdate() {
     $("#update-info").text("正在检查更新...");
     $("#checkUpdate-button").attr("disabled", true);
     $("#spinner").show();
-    $.get("https://mrui-api.hzchu.top/v2/api/checkupdate", function(data) {
+    $.get("https://mrui-api.hzchu.top/v3/api/checkupdate", function(data) {
         let version = document.querySelector('meta[name="version"]').getAttribute('content');
         var frontversion = data.front.version;
         var backendversion = data.backend.version;
