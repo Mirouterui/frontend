@@ -39,17 +39,10 @@ $('.mdui-select').change(function() {
 function getTp() {
     if (mode == 1) {
         $.get(host + '/routerapi/' + routernum + '/api/misystem/status', function(data) {
-            // if (data.code != 0) {
-            //     mdui.snackbar({
-            //         message: "请求失败：" + data.msg
-            //     })
-            //     return
-            // }
             cputp = data.temperature
             w24gtp = 0
             w5gtp = 0
             if (cputp == 0) {
-                // 虽然一刀切不好，但没办法
                 if (!warningconst) {
                     mdui.snackbar({
                         message: '该设备不支持'
@@ -93,71 +86,57 @@ function getTp() {
         })
     } else if (mode == 2) {
         $.get(host + '/routerapi/' + routernum + '/systemapi/gettemperature', function(data) {
-            // if (data.code != 0) {
-            //     mdui.snackbar({
-            //         message: "请求失败：" + data.msg
-            //     })
-            //     return
-            // }
-            if (data.code == 0) {
-                cputp = data.cpu
-                w24gtp = data.w24g
-                w5gtp = data.w5g
-                var table = document.querySelector("table");
-                var tbody = document.getElementById("tp-list");
-                tbody.innerHTML = "";
 
-                var tr = document.createElement("tr");
-                var td_cputp = document.createElement("td");
-                td_cputp.textContent = cputp + "°C";
-                tr.appendChild(td_cputp);
+            let cpu_temperature = data.data.cpu
+            let fan_speed = data.data.fanspeed
+            let w24g_temperature = data.data.w24g
+            let w5g_temperature = data.data.w5g
+            let table = document.querySelector("table");
+            let tbody = document.getElementById("tp-list");
+            tbody.innerHTML = "";
 
-                if (data.fanspeed == -233) {
-                    var td_fanspeed = document.createElement("td");
-                    td_fanspeed.textContent = "不支持";
-                    tr.appendChild(td_fanspeed);
-                }else{
-                    var td_fanspeed = document.createElement("td");
-                    td_fanspeed.textContent = w24gtp + "rpm";
-                    tr.appendChild(td_fanspeed);
-                }
-
-                if (w24gtp == -233) {
-                    var td_w24gtp = document.createElement("td");
-                    td_w24gtp.textContent = "不支持";
-                    tr.appendChild(td_w24gtp);
-                    w24gtp = 0
-                }else{
-                    var td_w24gtp = document.createElement("td");
-                    td_w24gtp.textContent = w24gtp + "°C";
-                    tr.appendChild(td_w24gtp);
-                }
-
-                if (w5gtp == -233) {
-                    var td_w5gtp = document.createElement("td");
-                    td_w5gtp.textContent = "不支持";
-                    tr.appendChild(td_w5gtp);
-                    w24gtp = 0
-                }else{
-                    var td_w5gtp = document.createElement("td");
-                    td_w5gtp.textContent = w5gtp + "°C";
-                    tr.appendChild(td_w5gtp);
-                }
-
-                //将内容行添加到表格内容区域中
-                tbody.appendChild(tr);
-
-                table.appendChild(tbody);
-                addData(cputp_data, cputp)
-                addData(w24gtp_data, w24gtp)
-                addData(w5gtp_data, w5gtp)
-                drawTpChart();
-            } else {
-
-                mdui.snackbar({
-                    message: data.msg
-                });
+            let tr = document.createElement("tr");
+            let td_cpu_temperature = document.createElement("td");
+            if (data.status.cpu){
+                td_cpu_temperature.textContent = cpu_temperature + "°C";
+                tr.appendChild(td_cpu_temperature);
             }
+
+            let td_fan_speed = document.createElement("td");
+            if (data.status.fanspeed){
+                td_fan_speed.textContent = fan_speed + " RPM";
+                tr.appendChild(td_fan_speed);
+            } else {
+                td_fan_speed.textContent = "不支持";
+                tr.appendChild(td_fan_speed);
+            }
+
+            let td_w24g_temperature = document.createElement("td");
+            if (data.status.w24g){
+                td_w24g_temperature.textContent = w24g_temperature + "°C";
+                tr.appendChild(td_w24g_temperature);
+            } else {
+                td_w24g_temperature.textContent = "不支持";
+                tr.appendChild(td_w24g_temperature);
+            }
+
+            let td_w5g_temperature = document.createElement("td");
+
+            if (data.status.w5g){
+                td_w5g_temperature.textContent = w5g_temperature + "°C";
+                tr.appendChild(td_w5g_temperature);
+            } else {
+                td_w5g_temperature.textContent = "不支持";
+                tr.appendChild(td_w5g_temperature);
+            }
+
+            //将内容行添加到表格内容区域中
+            tbody.appendChild(tr);
+            table.appendChild(tbody);
+            addData(cputp_data, cpu_temperature)
+            addData(w24gtp_data, w24g_temperature)
+            addData(w5gtp_data, w5g_temperature)
+            drawTpChart();
 
         }).fail(function(data) {
             mdui.snackbar({
