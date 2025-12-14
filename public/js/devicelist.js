@@ -43,7 +43,7 @@ function listDevices(dev) {
 
         //创建内容单元格，并添加到内容行中
         var td_devname = document.createElement("td");
-        var detail_url = "/device/index.html?mac=" + device.mac;
+        var detail_url = "/web/device/index.html?mac=" + device.mac;
         td_devname.innerHTML = "<a href='" + detail_url + "'>" + device.name + "</a>";
         tr.appendChild(td_devname);
 
